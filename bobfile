@@ -3,9 +3,11 @@ include https://raw.githubusercontent.com/codemonstur/bobfiles/master/foss-app-g
 name: imageclean
 version: 1
 enablePreview: false
+release: 11
 packaging: bob-plugin
 dependencies:
   - project: ../bobthebuildtool
     scope: provided
   - repository: org.apache.commons:commons-imaging:1.0-alpha3
-
+  - repository: junit:junit:4.13.2
+    scope: test

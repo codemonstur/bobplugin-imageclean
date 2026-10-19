@@ -8,15 +8,15 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 public interface OnlyFileVisitor<T> extends FileVisitor<T> {
 
-    default FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+    default FileVisitResult preVisitDirectory(T dir, BasicFileAttributes attrs) throws IOException {
         return FileVisitResult.CONTINUE;
     }
 
-    default FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
-        return FileVisitResult.CONTINUE;
+    default FileVisitResult visitFileFailed(T file, IOException exc) throws IOException {
+        throw exc;
     }
 
-    default FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+    default FileVisitResult postVisitDirectory(T dir, IOException exc) throws IOException {
         return FileVisitResult.CONTINUE;
     }
 
