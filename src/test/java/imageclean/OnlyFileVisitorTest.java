@@ -1,6 +1,6 @@
 package imageclean;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -8,9 +8,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class OnlyFileVisitorTest {
+class OnlyFileVisitorTest {
 
     private static class Visitor implements OnlyFileVisitor<Path> {
         @Override
@@ -20,17 +20,17 @@ public class OnlyFileVisitorTest {
     }
 
     @Test
-    public void preVisitDirectoryContinues() throws IOException {
+    void preVisitDirectoryContinues() throws IOException {
         assertEquals(FileVisitResult.CONTINUE, new Visitor().preVisitDirectory(Path.of("/tmp"), null));
     }
 
     @Test
-    public void postVisitDirectoryContinues() throws IOException {
+    void postVisitDirectoryContinues() throws IOException {
         assertEquals(FileVisitResult.CONTINUE, new Visitor().postVisitDirectory(Path.of("/tmp"), null));
     }
 
     @Test
-    public void visitFileFailedRethrows() {
+    void visitFileFailedRethrows() {
         final var visitor = new Visitor();
         final var failure = new IOException("boom");
         try {
@@ -43,7 +43,7 @@ public class OnlyFileVisitorTest {
     }
 
     @Test
-    public void visitFileIsAbstract() {
+    void visitFileIsAbstract() {
         final var visitor = new Visitor();
         // The visitFile method is the only abstract method left
         assertEquals(FileVisitResult.CONTINUE, visitor.visitFile(Path.of("/tmp"), null));
