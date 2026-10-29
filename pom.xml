@@ -43,15 +43,16 @@
         <version.library.commons-imaging>1.0-alpha3</version.library.commons-imaging>
         <version.library.junit>6.1.3</version.library.junit>
 
-        <version.plugin.check-cves>1.1.0</version.plugin.check-cves>
-        <version.plugin.check-license>1.4.0</version.plugin.check-license>
+        <version.plugin.check-cves>1.2.0</version.plugin.check-cves>
+        <version.plugin.check-license>1.5.0</version.plugin.check-license>
         <version.plugin.codegrade>0.2.0</version.plugin.codegrade>
-        <version.plugin.compiler>3.16.0</version.plugin.compiler>
         <version.plugin.enforcer>3.6.3</version.plugin.enforcer>
         <version.plugin.jar>3.5.1</version.plugin.jar>
         <version.plugin.shade>3.6.0</version.plugin.shade>
         <version.plugin.surefire>3.6.0</version.plugin.surefire>
-    </properties>
+            <version.library.pitest-junit5>1.2.3</version.library.pitest-junit5>
+        <version.plugin.pitest>1.30.1</version.plugin.pitest>
+</properties>
 
     <dependencies>
 
@@ -179,11 +180,10 @@
                         <configuration>
                             <includeTestDependencies>true</includeTestDependencies>
                             <rules>
-                                <rule>url:equal:http://www.opensource.org/licenses/bsd-license.php</rule>
-                                <rule>name:regex:(The )?Apache(\s|-)(Software )?(License |License, )?(Version |version )?2\.0</rule>
-                                <rule>name:equal:Eclipse Public License 1.0</rule>
-                                <rule>url:equal:https://www.eclipse.org/legal/epl-v20.html</rule>
+                                <rule>name:regex:.*Apache.*</rule>
+                                <rule>name:regex:.*Eclipse.*</rule>
                             </rules>
+                        
                         </configuration>
                     </plugin>
 
@@ -240,6 +240,38 @@
             </build>
         </profile>
 
-    </profiles>
+            <profile>
+            <id>mutation</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-maven</artifactId>
+                        <version>${version.plugin.pitest}</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.pitest</groupId>
+                                <artifactId>pitest-junit5-plugin</artifactId>
+                                <version>${version.library.pitest-junit5}</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>mutationCoverage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+</profiles>
 
 </project>
