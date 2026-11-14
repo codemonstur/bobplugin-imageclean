@@ -24,10 +24,19 @@ import static java.nio.file.Files.isRegularFile;
 import static java.util.stream.Collectors.toList;
 import static jcli.CliParserBuilder.newCliParser;
 
+/**
+ * The {@code BobPlugin} enum.
+ */
 public enum BobPlugin {;
 
     private static final String DESCRIPTION = "Copies images from a resource directory to target/classes and cleans them of metadata";
 
+    /**
+     * Performs the {@code installPlugin} operation.
+     *
+     * @param project the project
+     * @throws VersionTooOld if the operation fails
+     */
     public static void installPlugin(final Project project) throws VersionTooOld {
         requireBobVersion("7");
         project.addCommand("imageclean", DESCRIPTION, BobPlugin::copyImages);

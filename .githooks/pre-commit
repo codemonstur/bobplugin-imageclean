@@ -12,8 +12,17 @@ report="src/docs/quality/codegrade-${timestamp}.json"
 
 mkdir -p src/docs/quality
 
-mvn -q -N com.github.codemonstur:codegrade-maven-plugin:0.2.0:check \
-  -Dcodegrade.format=JSON \
-  -Dcodegrade.outputFile="$report"
+local_repository="${MAVEN_LOCAL_REPOSITORY:-$HOME/.m2/repository}"
+cli_jar=$(find "$local_repository/com/github/codemonstur/codegrade-cli" \
+  -name 'codegrade-cli-*.jar' \
+  ! -name '*-sources.jar' \
+  ! -name '*-javadoc.jar' 2>/dev/null | sort -V | tail -n 1)
+
+if [ -z "$cli_jar" ]; then
+  echo "codegrade-cli jar not found in $local_repository; skipping quality report" >&2
+  exit 0
+fi
+
+java -jar "$cli_jar" . --format JSON --output "$report"
 
 git add "$report"

@@ -54,6 +54,11 @@ release-notes: ## Write release notes in src/docs/releases for the current versi
 	@git log --pretty="%s" $(PREVIOUS_TAG)... master >> src/docs/releases/release-$(VERSION).txt
 
 deploy: ## Clean, build and deploy a version to Github
+	@if [ ! -f src/docs/releases/release-$(VERSION).txt ]; then \
+		$(INFO) "Release notes not found: src/docs/releases/release-$(VERSION).txt" >&2; \
+		$(INFO) "Write the release notes by hand before deploying." >&2; \
+		exit 1; \
+	fi
 	@$(INFO) "Building and running tests"
 	@mvn clean package
 	@$(INFO) "Creating github release"
